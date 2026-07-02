@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architecture of Silence: Understanding Settler Ignorance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-primary: #fdfcf9;
+            --text-main: #2c2925;
+            --accent-muted: #8c7851;
+            --accent-warm: #d4a373;
+            --border-light: #e5e1da;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link.active {
+            border-bottom-color: var(--accent-muted);
+            color: var(--accent-muted);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-gate {
+            border-left: 4px solid var(--accent-muted);
+            background: rgba(140, 120, 81, 0.05);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+<!-- Chosen Palette: Earthy Enlightenment (Warm Neutrals, Cream, Sand, and Muted Gold) -->
+<!-- Application Structure Plan: 
+    1. Narrative Hero: Introduces the concept of "What did not reach us."
+    2. Epistemologies of Ignorance: An interactive card layout exploring theories by Mills, Tuck, and Regan.
+    3. The Information Filter: A step-by-step interactive simulation showing how historical facts are "filtered" by institutions.
+    4. The Awareness Gap: A Chart.js visualization comparing historical timelines vs. public awareness levels.
+    5. Structural Silence: A grid-based exploration of the mechanisms (Education, Media, Family).
+    6. Reflection Space: A simple interaction for users to document their own realization moments.
+    This structure is chosen to move from the abstract theory of 'not knowing' to the concrete 'mechanics' of how that ignorance is maintained.
+-->
+<!-- Visualization & Content Choices:
+    - Interactive Pillar Cards: Explaining "White Ignorance" and "Colonial Amnesia" (Goal: Organise).
+    - Information Flow Simulator: Custom JS to show text transformation (Goal: Relationships).
+    - Awareness Timeline: Chart.js Bar/Line hybrid to show the gap between IRS closure and public discourse (Goal: Change/Compare).
+    - Interaction: Tabbed navigation, hover-reveals, and dynamic chart updates to foster active discovery.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <span class="text-xl font-bold tracking-tight text-[#8c7851]">Architecture of Silence</span>
+        <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <a href="#intro" class="nav-link">The Concept</a>
+            <a href="#theory" class="nav-link">Theories</a>
+            <a href="#mechanics" class="nav-link">Mechanics</a>
+            <a href="#data" class="nav-link">The Gap</a>
+        </div>
+    </div>
+</nav>
+
+<main class="pt-24 pb-12">
+    <!-- Section 1: Intro -->
+    <section id="intro" class="max-w-4xl mx-auto px-6 mb-24 fade-in">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-gray-900">What Did Not Reach Us</h1>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed italic">
+                "Ignorance is not merely a lack of information; it is a motivated construction, a structural filter that determines what is allowed into the public consciousness."
+            </p>
+        </div>
+        <div class="p-8 bg-[#f5f2ed] rounded-xl border border-[#e5e1da]">
+            <h3 class="font-bold text-xl mb-4">Introduction: The Void of Knowledge</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                This application explores the deliberate and accidental mechanisms that have kept non-Native populations unaware of the realities of settler colonialism and the Indian Residential School (IRS) system. We often ask why we "don't know," but we rarely examine the architecture of the silence itself. 
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                By interacting with the sections below, you will explore how education, media, and institutional "gatekeeping" act as filters. This isn't just about missing facts; it's about an active <strong>epistemology of ignorance</strong>—a way of not-knowing that is required to maintain the status quo of settler society.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 2: Theoretical Foundations -->
+    <section id="theory" class="max-w-6xl mx-auto px-6 mb-32">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-4">1. Theoretical Pillars</h2>
+            <p class="text-gray-600 max-w-3xl">
+                Scholars have long studied why certain groups remain "blind" to their own history. This section introduces the core academic frameworks that explain the phenomenon of "what did not reach us." Click each concept to see how it contributes to systemic ignorance.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div onclick="showTheory('white')" class="cursor-pointer group p-8 bg-white border border-gray-200 rounded-lg hover:shadow-xl transition-all border-b-4 hover:border-b-[#8c7851]">
+                <h3 class="text-xl font-bold mb-3 group-hover:text-[#8c7851]">White Ignorance</h3>
+                <p class="text-sm text-gray-500 mb-4">Charles Mills (1997)</p>
+                <p class="text-gray-600 text-sm">A cognitive state that is not accidental, but produced by a social contract that requires misinterpretation of the world.</p>
+                <div class="mt-4 text-[#8c7851] text-xs font-bold uppercase tracking-widest">Explore Concept →</div>
+            </div>
+
+            <div onclick="showTheory('settler')" class="cursor-pointer group p-8 bg-white border border-gray-200 rounded-lg hover:shadow-xl transition-all border-b-4 hover:border-b-[#d4a373]">
+                <h3 class="text-xl font-bold mb-3 group-hover:text-[#d4a373]">Settler Fragility</h3>
+                <p class="text-sm text-gray-500 mb-4">Eve Tuck & K. Wayne Yang</p>
+                <p class="text-gray-600 text-sm">The defensive mechanisms used to protect the settler identity from the "unsettling" truths of stolen land and forced assimilation.</p>
+                <div class="mt-4 text-[#d4a373] text-xs font-bold uppercase tracking-widest">Explore Concept →</div>
+            </div>
+
+            <div onclick="showTheory('amnesia')" class="cursor-pointer group p-8 bg-white border border-gray-200 rounded-lg hover:shadow-xl transition-all border-b-4 hover:border-b-[#2c2925]">
+                <h3 class="text-xl font-bold mb-3 group-hover:text-[#2c2925]">Colonial Amnesia</h3>
+                <p class="text-sm text-gray-500 mb-4">Paulette Regan (2010)</p>
+                <p class="text-gray-600 text-sm">The collective "forgetting" of state-sponsored violence to maintain the myth of the benevolent peacemaker.</p>
+                <div class="mt-4 text-gray-900 text-xs font-bold uppercase tracking-widest">Explore Concept →</div>
+            </div>
+        </div>
+
+        <div id="theory-detail" class="mt-12 p-8 bg-white border border-gray-200 rounded-xl hidden">
+            <!-- Content injected via JS -->
+        </div>
+    </section>
+
+    <!-- New Section: Case Study (Quakers & TRR) -->
+    <section id="quaker-case-study" class="max-w-6xl mx-auto px-6 mb-32">
+        <div class="bg-[#fcfaf6] border border-[#e8dfd1] rounded-2xl p-8 md:p-12 shadow-sm">
+            <div class="max-w-3xl mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#8c7851] bg-[#8c7851]/10 px-3 py-1 rounded-full">Case Study in Epistemic Silence</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4 mb-4 text-gray-900">Quakers & "What Did Not Reach Us"</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    How does a historically peace-centered community experience a collective amnesia? Using the writings of Quaker activist <strong>Jeff Kisling</strong> (author of <em>Active Objection</em>) and the work of the program <strong><a href="https://friendspeaceteams.org/trr/" target="_blank" class="text-[#8c7851] underline font-semibold hover:text-[#d4a373]">Toward Right Relationship with Native Peoples (TRR)</a></strong>, we can examine how "what did not reach us" transforms from a personal realization into an institutional movement of repair.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Column 1: Personal Throughline (Jeff Kisling) -->
+                <div class="space-y-6">
+                    <div class="p-6 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                            <span class="inline-block w-2 h-2 bg-[#d4a373] rounded-full mr-2"></span>
+                            The Scattergood Silence (Jeff Kisling)
+                        </h4>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                            In his essays like <em>Scattergood and the Hub</em>, Kisling explores "what did not reach us" as a definitive structural condition of his youth. Attending Scattergood Friends School in the late 1960s, he experienced a total void: the school’s curriculum was completely silent on the fact that Quakers historically operated over 30 Indian boarding schools designed for forced cultural assimilation.
+                        </p>
+                        <blockquote class="text-xs italic border-l-2 border-[#d4a373] pl-3 text-gray-500 my-2">
+                            "What did not reach us is a statement, not a question. It is the realization of what was systematically withheld from our generation's consciousness." — Jeff Kisling
+                        </blockquote>
+                    </div>
+
+                    <div class="p-6 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                            <span class="inline-block w-2 h-2 bg-[#8c7851] rounded-full mr-2"></span>
+                            The "Benevolent" Filter
+                        </h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            What <em>did</em> reach Quaker families was a highly sanitized myth of pure benevolence—stories of ancestors who simply "went to help the Indian children." This filter kept the violent mechanics of Grant’s Peace Policy and child separation completely hidden from descendants, protecting the white Quaker identity of absolute pacifism.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Column 2: The TRR Program Integration -->
+                <div class="space-y-6">
+                    <div class="p-6 bg-slate-900 text-white rounded-xl shadow-md">
+                        <h4 class="font-bold text-[#d4a373] mb-2 flex items-center">
+                            <span class="inline-block w-2 h-2 bg-[#d4a373] rounded-full mr-2"></span>
+                            The Integration: TRR as the Truth Bridge
+                        </h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                            Friends Peace Teams' program, <strong>Toward Right Relationship with Native Peoples (TRR)</strong>, co-directed by Paula Palmer and Jerilyn DeCoteau, acts as the direct counter-mechanism to "what did not reach us." Its primary methodology is <strong>truth-telling as a prerequisite for healing</strong>.
+                        </p>
+                        <ul class="text-xs text-slate-400 space-y-2 list-disc pl-4">
+                            <li><strong>Unearthing Archives:</strong> TRR researches and publishes the raw evidence of Quaker involvement in boarding schools, pulling records out of local meeting vaults.</li>
+                            <li><strong>"Roots of Injustice" Workshops:</strong> Relational workshops designed to bypass intellectual defensiveness, helping modern settlers emotionally experience the historical timeline.</li>
+                            <li><strong>Decolonial Advocacy:</strong> Turning the grief of what did not reach us into support for the federal Truth and Healing Commission.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Interactive Myth vs. Documented Reality Toggler -->
+                    <div class="p-6 bg-white border border-gray-200 rounded-xl">
+                        <h5 class="font-bold text-xs text-gray-400 uppercase tracking-widest mb-3">Interactive Contrast: Myth vs. Record</h5>
+                        <div class="flex space-x-2 mb-4">
+                            <button onclick="toggleQuakerView('myth')" id="btn-quaker-myth" class="px-3 py-1 text-xs font-semibold rounded-full bg-[#8c7851] text-white transition-all">The Inherited Myth</button>
+                            <button onclick="toggleQuakerView('record')" id="btn-quaker-record" class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">The Documented Reality</button>
+                        </div>
+                        <div id="quaker-contrast-box" class="p-4 bg-gray-50 border-l-4 border-[#8c7851] text-sm text-gray-700 min-h-[100px] italic">
+                            "Our ancestors was dedicated to living peacefully with all people, and went out West to gently educate and care for native children." (The narrative that successfully reached generations)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: The Filter (Interactive) -->
+    <section id="mechanics" class="max-w-4xl mx-auto px-6 mb-32">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">2. The Mechanics of Filtering</h2>
+            <p class="text-gray-600">
+                How does a historical truth become an "unknown" fact? Use the interactive filter below to see how institutional "gates" sanitize information before it reaches the settler public.
+            </p>
+        </div>
+
+        <div class="bg-slate-900 text-white rounded-2xl p-8 shadow-2xl">
+            <div class="mb-8">
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Original Historical Reality</label>
+                <div class="text-xl font-serif text-gray-100 p-4 bg-slate-800 rounded border border-slate-700 italic">
+                    "State-sponsored schools used systematic abuse to forcibly assimilate Indigenous children and eradicate their cultures."
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 mb-8">
+                <button onclick="applyFilter('edu')" class="px-4 py-2 bg-slate-700 hover:bg-[#8c7851] rounded text-sm transition-colors border border-slate-600">Apply Education Filter</button>
+                <button onclick="applyFilter('media')" class="px-4 py-2 bg-slate-700 hover:bg-[#8c7851] rounded text-sm transition-colors border border-slate-600">Apply Media Filter</button>
+                <button onclick="applyFilter('gov')" class="px-4 py-2 bg-slate-700 hover:bg-[#8c7851] rounded text-sm transition-colors border border-slate-600">Apply Institutional Gate</button>
+                <button onclick="resetFilters()" class="px-4 py-2 bg-red-900/30 hover:bg-red-900 text-red-200 rounded text-sm transition-colors border border-red-800">Reset Information</button>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">What Reaches the Public</label>
+                <div id="filtered-text" class="text-2xl font-bold text-[#d4a373] p-6 bg-slate-800/50 rounded-xl min-h-[100px] flex items-center transition-all duration-500">
+                    "State-sponsored schools used systematic abuse to forcibly assimilate Indigenous children and eradicate their cultures."
+                </div>
+            </div>
+
+            <div id="filter-explanation" class="mt-6 text-sm text-gray-400 italic">
+                Click a filter to see how information is sanitized.
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Data Visualization -->
+    <section id="data" class="max-w-6xl mx-auto px-6 mb-32">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-4">3. The Awareness Gap</h2>
+            <p class="text-gray-600 mb-8">
+                This chart visualizes the disconnect between the operational timeline of the Indian Residential School system and the volume of non-Native public awareness and legislative recognition. Notice the "long silence" where schools remained open while public discourse was virtually non-existent.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="chart-container">
+                    <canvas id="awarenessChart"></canvas>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div class="p-4 border-l-4 border-[#8c7851] bg-[#fdfcf9]">
+                    <h4 class="font-bold text-sm uppercase text-gray-500">The "Deep Silence" (1920-1960)</h4>
+                    <p class="text-sm text-gray-700">While IRS attendance peaked, school curricula for non-Natives completely omitted the system's existence.</p>
+                </div>
+                <div class="p-4 border-l-4 border-[#d4a373] bg-[#fdfcf9]">
+                    <h4 class="font-bold text-sm uppercase text-gray-500">The Discovery Shock (2021)</h4>
+                    <p class="text-sm text-gray-700">The "uncovering" of graves at Kamloops acted as a sudden rupture in the filter, forcing information to reach the public that survivors had been sharing for decades.</p>
+                </div>
+                <div class="text-xs text-gray-400 italic">
+                    *Chart represents generalized trends in non-Native awareness based on media mentions and curriculum inclusion.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: The "Why" Grid -->
+    <section class="max-w-6xl mx-auto px-6 mb-32">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">4. Why It Didn't Reach Us</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Ignorance is maintained through multiple redundant systems. If one filter fails, another typically catches the information to prevent a systemic "unsettling."
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex p-6 bg-white border border-gray-100 rounded-xl">
+                <div class="mr-6 flex-shrink-0 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center font-bold text-[#8c7851]">01</div>
+                <div>
+                    <h3 class="font-bold mb-2">Curriculum Erasure</h3>
+                    <p class="text-sm text-gray-600">History textbooks historically presented "pioneer" narratives where Indigenous people were either absent or relegated to a primitive past, creating a temporal distance that makes modern settler-colonialism invisible.</p>
+                </div>
+            </div>
+            <div class="flex p-6 bg-white border border-gray-100 rounded-xl">
+                <div class="mr-6 flex-shrink-0 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center font-bold text-[#8c7851]">02</div>
+                <div>
+                    <h3 class="font-bold mb-2">The "Peacemaker" Myth</h3>
+                    <p class="text-sm text-gray-600">National identity (especially in Canada) is built on being "kinder" than other colonial powers. Information about the IRS ruptures this identity, so it is psychologically rejected or "not heard."</p>
+                </div>
+            </div>
+            <div class="flex p-6 bg-white border border-gray-100 rounded-xl">
+                <div class="mr-6 flex-shrink-0 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center font-bold text-[#8c7851]">03</div>
+                <div>
+                    <h3 class="font-bold mb-2">Linguistic Sanitization</h3>
+                    <p class="text-sm text-gray-600">Using terms like "schools" instead of "internment camps" or "assimilation" instead of "cultural genocide" changes how the information is processed by the brain, reducing its perceived urgency.</p>
+                </div>
+            </div>
+            <div class="flex p-6 bg-white border border-gray-100 rounded-xl">
+                <div class="mr-6 flex-shrink-0 w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center font-bold text-[#8c7851]">04</div>
+                <div>
+                    <h3 class="font-bold mb-2">Media Marginalization</h3>
+                    <p class="text-sm text-gray-600">For decades, Indigenous voices were excluded from mainstream newsrooms. When survivors spoke out, they were framed as "fringe" or "unreliable," ensuring their testimonies didn't reach the broader public.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Reflection -->
+    <footer class="bg-[#2c2925] text-white py-20">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">Piercing the Silence</h2>
+            <p class="text-gray-400 mb-10 leading-relaxed">
+                Understanding "what did not reach us" is the first step toward dismantling settler ignorance. It requires an active commitment to seeking the truths that have been filtered out and recognizing the structural reasons for our own unknowing.
+            </p>
+            <div class="inline-block px-8 py-4 border border-gray-600 rounded-full text-sm hover:bg-white hover:text-black transition-all cursor-pointer">
+                Continue the Research
+            </div>
+            <div class="mt-20 text-xs text-gray-500">
+                &copy; 2024 Architecture of Silence. An Exploration of Epistemic Responsibility.
+            </div>
+        </div>
+    </footer>
+</main>
+
+<script>
+    // Theory Detail Data
+    const theoryData = {
+        white: {
+            title: "White Ignorance",
+            body: "Charles Mills argues that white ignorance is not a personal failure of intelligence, but a social condition. It is a 'Racial Contract' where society agrees to misinterpret the world to sustain white supremacy. This ignorance 'protects' the group from the moral consequences of its history.",
+            quote: "One has to learn to see any anyway, but one also has to learn how not to see."
+        },
+        settler: {
+            title: "Settler Fragility & Moves to Innocence",
+            body: "Eve Tuck and K. Wayne Yang describe 'moves to innocence'—strategies used by settlers to relieve themselves of guilt without actually giving up power or land. Ignorance is one such move; by 'not knowing,' the settler remains 'innocent.'",
+            quote: "Settler colonialism is a structure, not an event."
+        },
+        amnesia: {
+            title: "Colonial Amnesia",
+            body: "Paulette Regan highlights how non-Native people engage in a collective amnesia that erases the violence of the state. This allows the 'Settler Myth' of the benevolent humanitarian to persist, even in the face of contradictory evidence.",
+            quote: "The struggle is not just about Indigenous rights, but about the settler’s own decolonization."
+        }
+    };
+
+    // Quaker View Contrast Logic
+    const quakerData = {
+        myth: {
+            text: '"Our ancestors were dedicated to living peacefully with all people, and went out West to gently educate and care for native children." (The sanitized history that successfully reached Quaker generations)',
+            border: '#8c7851'
+        },
+        record: {
+            text: '"The whole character of the Indian must be changed... [they must] be removed from the contaminating influences of the home circle." — Quaker Agent Edward Shaw / Susan Wood (1870). Quakers ran over 30 boarding schools enforcing language suppression and child labor.',
+            border: '#d4a373'
+        }
+    };
+
+    function toggleQuakerView(view) {
+        const box = document.getElementById('quaker-contrast-box');
+        const btnMyth = document.getElementById('btn-quaker-myth');
+        const btnRecord = document.getElementById('btn-quaker-record');
+        
+        box.innerText = quakerData[view].text;
+        box.style.borderLeftColor = quakerData[view].border;
+
+        if (view === 'myth') {
+            btnMyth.className = "px-3 py-1 text-xs font-semibold rounded-full bg-[#8c7851] text-white transition-all";
+            btnRecord.className = "px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all";
+        } else {
+            btnMyth.className = "px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all";
+            btnRecord.className = "px-3 py-1 text-xs font-semibold rounded-full bg-[#d4a373] text-white transition-all";
+        }
+    }
+
+    function showTheory(key) {
+        const detail = document.getElementById('theory-detail');
+        const data = theoryData[key];
+        
+        detail.innerHTML = `
+            <div class="fade-in">
+                <h3 class="text-2xl font-bold mb-2 text-[#8c7851]">${data.title}</h3>
+                <p class="text-gray-700 mb-6 leading-relaxed">${data.body}</p>
+                <div class="p-4 bg-gray-50 border-l-4 border-gray-300 italic text-gray-600">
+                    "${data.quote}"
+                </div>
+            </div>
+        `;
+        detail.classList.remove('hidden');
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Filter Simulation Logic
+    let currentFilters = { edu: false, media: false, gov: false };
+
+    function applyFilter(type) {
+        currentFilters[type] = true;
+        updateFilterUI();
+    }
+
+    function resetFilters() {
+        currentFilters = { edu: false, media: false, gov: false };
+        updateFilterUI();
+    }
+
+    function updateFilterUI() {
+        const textEl = document.getElementById('filtered-text');
+        const expEl = document.getElementById('filter-explanation');
+        let baseText = "State-sponsored schools used systematic abuse to forcibly assimilate Indigenous children and eradicate their cultures.";
+        
+        if (currentFilters.edu) {
+            baseText = baseText.replace("systematic abuse", "strict discipline").replace("forcibly assimilate", "educate");
+        }
+        if (currentFilters.media) {
+            baseText = baseText.replace("State-sponsored schools", "Residential institutions").replace("eradicate their cultures", "help them integrate");
+        }
+        if (currentFilters.gov) {
+            baseText = "The government provided educational opportunities for Indigenous youth to improve their future prospects in a changing world.";
+        }
+
+        textEl.innerText = baseText;
+        
+        if (currentFilters.gov) {
+            expEl.innerText = "Institutional Gate applied: The narrative has been fully inverted into a story of 'opportunity.'";
+        } else if (currentFilters.edu || currentFilters.media) {
+            expEl.innerText = "Filters active: Notice how the violent language is replaced by neutral or positive euphemisms.";
+        } else {
+            expEl.innerText = "Original Truth: The language is clear, direct, and acknowledges harm.";
+        }
+    }
+
+    // Chart.js Configuration
+    const ctx = document.getElementById('awarenessChart').getContext('2d');
+    const awarenessChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1880', '1900', '1920', '1940', '1960', '1980', '1996', '2008', '2015', '2021', '2024'],
+            datasets: [
+                {
+                    label: 'Operational Scale of IRS',
+                    data: [10, 30, 60, 85, 95, 40, 5, 0, 0, 0, 0],
+                    borderColor: '#8c7851',
+                    backgroundColor: 'rgba(140, 120, 81, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2
+                },
+                {
+                    label: 'Non-Native Public Awareness',
+                    data: [2, 2, 1, 1, 1, 5, 10, 25, 45, 95, 90],
+                    borderColor: '#d4a373',
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    borderWidth: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { size: 11 },
+                        usePointStyle: true
+                    }
+                },
+                tooltip: {
+                    padding: 12,
+                    backgroundColor: 'rgba(0,0,0,0.8)'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Intensity/Volume (Index)', font: { size: 10 } },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Navigation highlight logic
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>
